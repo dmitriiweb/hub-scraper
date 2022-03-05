@@ -3,9 +3,10 @@ from typing import List, Protocol
 
 
 class ScraperSettings(Protocol):
-    hub_url: str
+    hub_name: str
     threads_number: int
     time_delay: int
+    max_page: int
 
 
 class DataFolder(Protocol):
@@ -14,6 +15,12 @@ class DataFolder(Protocol):
 
 class ArticleListing(Protocol):
     url: str
+
+
+class Article(Protocol):
+    url: str
+    title: str
+    content: str
 
 
 class ArticlesFilter(Protocol):

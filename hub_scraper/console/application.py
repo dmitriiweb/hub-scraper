@@ -23,9 +23,9 @@ def coro(f):
 @click.command()
 @coro
 @click.option(
-    "-u",
-    "--url",
-    help="Hab to scrape, e.g. https://habr.com/ru/hub/python/",
+    "-h",
+    "--hub",
+    help="Hub name, e.g. 'python' ",
     type=str,
     required=True,
 )
@@ -61,76 +61,33 @@ def coro(f):
     is_flag=True,
 )
 @click.option(
-    "--no-sandbox",
-    help="If true will skip articles from the sandbox. Default False",
-    type=bool,
-    required=False,
-    default=False,
-    is_flag=True,
-)
-@click.option(
-    "-fr",
-    "--filter-rating",
-    help="Filter articles by rating, default: 0",
+    "-mp",
+    "--max-page",
+    help="Max page to scrape, default: 50",
     type=int,
     required=False,
-    default=0,
+    default=50,
 )
 @click.option(
-    "-fc",
-    "--filter-comments",
-    help="Filter articles by comments count, default: 0",
-    type=int,
-    required=False,
-    default=0,
-)
-@click.option(
-    "-fc",
-    "--filter-comments",
-    help="Filter articles by comments count, default: 0",
-    type=int,
-    required=False,
-    default=0,
-)
-@click.option(
-    "-fb",
-    "--filter-bookmarks",
-    help="Filter articles by bookmarks count, default: 0",
-    type=int,
-    required=False,
-    default=0,
-)
-@click.option(
-    "-fb",
-    "--filter-tags",
-    help='Filter articles by list of tags, e.g. "Django, tutorial". Default: None',
+    "--filter-datetime",
+    help="Filter articles by date and time of publications, e.g. 'dd-mm-yyyy hh:m', default: None",
     type=str,
     required=False,
     default=None,
 )
 @click.option(
-    "-fk",
-    "--filter-keywords",
-    help='Filter articles by list of key-words for title, e.g. "Django, tutorial". Default: None',
+    "--filter-post-type",
+    help="List of post types to include articles, e.g. 'article, news', default: article",
     type=str,
     required=False,
-    default=None,
+    default="article",
 )
 @click.option(
-    "-fd",
-    "--filter-date",
-    help='Filter articles by date, e.g. "dd-mm-yyyy hh:mm". Default: None',
-    type=str,
+    "--filter-up-votes-count",
+    help="Filter articles by minimum up-votes count, default: 0",
+    type=int,
     required=False,
-    default=None,
-)
-@click.option(
-    "-fa",
-    "--filter-author",
-    help='Filter articles by list of authors, e.g. "he_boiko, OldTech". Default: None',
-    type=str,
-    required=False,
-    default=None,
+    default=0,
 )
 async def main(
     url: str,
@@ -138,14 +95,10 @@ async def main(
     threads: int,
     time_delay: int,
     images: bool,
-    no_sandbox: bool,
-    filter_comments: int,
-    filter_rating: int,
-    filter_bookmarks: int,
-    filter_tags: Optional[str],
-    filter_keywords: Optional[str],
-    filter_date: Optional[str],
-    filter_author: Optional[str],
+    max_page: int,
+    filter_datetime: Optional[str],
+    filter_post_type: Optional[str],
+    filter_up_votes_count: int,
 ):
     output_folder = Path(output_folder)
 
