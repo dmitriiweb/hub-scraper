@@ -7,6 +7,9 @@ from .article_filter import ArticleFilter
 
 class PostTypeFilter(ArticleFilter):
     def __init__(self, *args):
+        if not isinstance(args, tuple):
+            raise TypeError("article_types must be a tuple")
+
         self.article_types = set(*args)
         super().__init__(*args)
 
