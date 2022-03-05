@@ -53,14 +53,6 @@ def coro(f):
     default=1,
 )
 @click.option(
-    "--images",
-    help="If true will download images from articles locally, if not in downloaded articles will be urls to images. Default False",
-    type=bool,
-    required=False,
-    default=False,
-    is_flag=True,
-)
-@click.option(
     "-mp",
     "--max-page",
     help="Max page to scrape, default: 50",
@@ -94,7 +86,6 @@ async def main(
     output_folder: str,
     threads: int,
     time_delay: int,
-    images: bool,
     max_page: int,
     filter_datetime: Optional[str],
     filter_post_type: Optional[str],
