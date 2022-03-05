@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import List, Protocol
 
+from hub_scraper.articles import ArticleListing
+
 
 class ScraperSettings(Protocol):
     hub_name: str
@@ -11,16 +13,6 @@ class ScraperSettings(Protocol):
 
 class DataFolder(Protocol):
     articles_folder: Path
-
-
-class ArticleListing(Protocol):
-    url: str
-
-
-class Article(Protocol):
-    url: str
-    title: str
-    content: str
 
 
 class ArticlesFilter(Protocol):

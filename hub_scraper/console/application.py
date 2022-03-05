@@ -62,8 +62,8 @@ def coro(f):
     default=50,
 )
 @click.option(
-    "--filter-datetime",
-    help="Filter articles by date and time of publications, e.g. 'dd-mm-yyyy hh:m', default: None",
+    "--filter-min-datetime",
+    help="Filter articles by min date and time of publications, e.g. 'dd-mm-yyyy hh:m', default: None",
     type=str,
     required=False,
     default=None,

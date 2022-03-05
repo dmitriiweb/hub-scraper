@@ -1,6 +1,8 @@
 from typing import Iterable, List
 
-from ._types import Article, ArticleListing, ArticlesFilter, DataFolder, ScraperSettings
+from hub_scraper.articles import ArticleListing
+
+from ._types import Article, ArticlesFilter, DataFolder, ScraperSettings
 
 
 class HabrScraper:
