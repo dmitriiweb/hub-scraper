@@ -18,3 +18,7 @@ class DataFolder(Protocol):
 class ArticlesFilter(Protocol):
     def filter_articles(self, articles: List[ArticleListing]) -> List[ArticleListing]:
         ...
+
+
+class Article(Protocol):
+    url: str

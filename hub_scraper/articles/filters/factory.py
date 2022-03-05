@@ -2,6 +2,7 @@ from enum import Enum, auto
 
 from .article_filter import ArticleFilter
 from .min_datetime_filter import MinDateTimeFilter
+from .post_type_filter import PostTypeFilter
 
 
 class ArticleFilterType(Enum):
@@ -10,9 +11,13 @@ class ArticleFilterType(Enum):
     """
 
     min_datetime_filter = auto()
+    post_type_filter = auto()
 
 
-FILTERS = {ArticleFilterType.min_datetime_filter: MinDateTimeFilter}
+FILTERS = {
+    ArticleFilterType.min_datetime_filter: MinDateTimeFilter,
+    ArticleFilterType.post_type_filter: PostTypeFilter,
+}
 
 
 def get_filter(*args, filter_type: ArticleFilterType) -> ArticleFilter:
