@@ -1,10 +1,10 @@
 .PHONY: test
 test:
-	pytest --cov=hab_scraper -vv tests/
-	flake8 hab_scraper tests/
-	mypy hab_scraper --implicit-reexport
-	black hab_scraper tests/
-	isort hab_scraper tests/
+	pytest --cov=hub_scraper -vv tests/
+	flake8 hub_scraper tests/
+	mypy hub_scraper --implicit-reexport
+	black hub_scraper tests/
+	isort hub_scraper tests/
 
 .PHONY: docs-serve
 docs-serve:
