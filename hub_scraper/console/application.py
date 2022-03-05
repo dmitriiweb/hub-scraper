@@ -88,7 +88,7 @@ async def main(
     threads: int,
     time_delay: int,
     max_page: int,
-    filter_datetime: Optional[str],
+    filter_min_datetime: Optional[str],
     filter_post_type: Optional[str],
     filter_up_votes_count: int,
 ):
