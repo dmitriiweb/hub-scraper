@@ -1,10 +1,11 @@
 import asyncio
 
 from functools import wraps
-from pathlib import Path
 from typing import Optional
 
 import click
+
+from .models import DataFolder, ScraperSettings
 
 
 def coro(f):
@@ -82,7 +83,7 @@ def coro(f):
     default=0,
 )
 async def main(
-    url: str,
+    hub: str,
     output_folder: str,
     threads: int,
     time_delay: int,
@@ -91,7 +92,10 @@ async def main(
     filter_post_type: Optional[str],
     filter_up_votes_count: int,
 ):
-    output_folder = Path(output_folder)
+    scraper_settings = ScraperSettings(
+        hub_name=hub, threads_number=threads, time_delay=time_delay, max_page=max_page
+    )
+    data_folder = DataFolder(output_folder)
 
 
 if __name__ == "__main__":
