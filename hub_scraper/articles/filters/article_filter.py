@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Protocol
+from typing import Generator, Iterable, Protocol
 
 from hub_scraper.articles import ArticleListing
 
@@ -13,5 +13,7 @@ class ArticleFilter(ABC):
         pass
 
     @abstractmethod
-    def filter_articles(self, articles: List[Article]) -> List[ArticleListing]:
+    def filter_articles(
+        self, articles: Iterable[Article]
+    ) -> Generator[ArticleListing, None, None]:
         ...
