@@ -26,5 +26,5 @@ def test_min_datetime_filter():
     article_filter = get_filter(
         threshold, filter_type=ArticleFilterType.min_datetime_filter
     )
-    filtered_articles = article_filter.filter_articles(get_articles())
+    filtered_articles = article_filter.filter_articles(get_articles())  # type: ignore
     assert len(list(filtered_articles)) == 2

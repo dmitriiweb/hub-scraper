@@ -1,12 +1,8 @@
-from typing import Generator, List, Protocol
+from typing import Generator, List
 
 from hub_scraper.articles import ArticleListing
 
 from .article_filter import ArticleFilter
-
-
-class Article(Protocol):
-    post_type: str
 
 
 class PostTypeFilter(ArticleFilter):
@@ -15,7 +11,7 @@ class PostTypeFilter(ArticleFilter):
         super().__init__(*args)
 
     def filter_articles(
-        self, articles: List[Article]
+        self, articles: List[ArticleListing]
     ) -> Generator[ArticleListing, None, None]:
         for article in articles:
             if article.post_type in self.article_types:
