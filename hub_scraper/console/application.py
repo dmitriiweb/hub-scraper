@@ -96,7 +96,7 @@ async def main(
     filter_up_votes_count: int,
 ):
     min_up_votes = filter_up_votes_count if filter_up_votes_count > 0 else None
-    hub = Hub(
+    hub_settings = Hub(
         hub_name=hub,
         threads_number=threads,
         time_delay=time_delay,
@@ -109,7 +109,7 @@ async def main(
         filter_post_type=filter_post_type,
         filter_up_votes_count=filter_up_votes_count,
     )
-    _ = HabrScraper(hub, article_filters, data_folder)
+    _ = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
 
 
 if __name__ == "__main__":

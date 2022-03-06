@@ -28,6 +28,6 @@ def get_filter(*args, filter_type: ArticleFilterType) -> ArticleFilter:
     Returns a filter function for a given filter type
     """
     try:
-        return FILTERS[filter_type](*args)
+        return FILTERS[filter_type](*args)  # type: ignore
     except KeyError:
         raise ValueError(f"No filter for type {filter_type}")

@@ -47,8 +47,8 @@ def get_filter_post_type(post_types: str):
     Args:
         post_types: must be a list of post types separated by comma, e.g. "article, news"
     """
-    post_types = [i.strip() for i in post_types.split(",")]
-    f = get_filter(post_types, filter_type=ArticleFilterType.post_type_filter)
+    post_types_list = [i.strip() for i in post_types.split(",")]
+    f = get_filter(post_types_list, filter_type=ArticleFilterType.post_type_filter)
     return f
 
 
