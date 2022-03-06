@@ -13,6 +13,9 @@ class ArticleFilter(ABC):
     def __init__(self, *args):
         pass
 
+    def __str__(self):
+        return self.__class__.__name__
+
     @abstractmethod
     def filter_articles(
         self, articles: Iterable[ArticleListing]

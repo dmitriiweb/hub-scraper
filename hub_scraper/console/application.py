@@ -5,6 +5,8 @@ from typing import Optional
 
 import click
 
+from utils import get_article_filters
+
 from .models import DataFolder, ScraperSettings
 
 
@@ -63,7 +65,7 @@ def coro(f):
 )
 @click.option(
     "--filter-min-datetime",
-    help="Filter articles by min date and time of publications, e.g. 'dd-mm-yyyy hh:m', default: None",
+    help="Filter articles by min date and time of publications, e.g. 'dd-mm-yyyy hh:mm', default: None",
     type=str,
     required=False,
     default=None,
@@ -96,6 +98,11 @@ async def main(
         hub_name=hub, threads_number=threads, time_delay=time_delay, max_page=max_page
     )
     data_folder = DataFolder(output_folder)
+    article_filters = get_article_filters(
+        filter_min_datetime=filter_min_datetime,
+        filter_post_type=filter_post_type,
+        filter_up_votes_count=filter_up_votes_count,
+    )
 
 
 if __name__ == "__main__":
