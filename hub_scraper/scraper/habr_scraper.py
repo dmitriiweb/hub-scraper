@@ -1,15 +1,15 @@
-from typing import Iterable, List
+from typing import List
 
 from hub_scraper.articles import ArticleListing
 
-from ._types import Article, ArticlesFilter, DataFolder, ScraperSettings
+from ._types import Article, ArticleFilter, DataFolder, Hub
 
 
 class HabrScraper:
     def __init__(
         self,
-        settings: ScraperSettings,
-        article_filters: Iterable[ArticlesFilter],
+        settings: Hub,
+        article_filters: List[ArticleFilter],
         data_folder: DataFolder,
     ):
         self.settings = settings
@@ -20,9 +20,6 @@ class HabrScraper:
         pass
 
     def get_article(self, url: str) -> Article:
-        pass
-
-    def _get_total_pages(self) -> int:
         pass
 
     def _listing_page_generator(self) -> List[str]:

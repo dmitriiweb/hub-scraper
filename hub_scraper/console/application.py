@@ -5,7 +5,9 @@ from typing import Optional
 
 import click
 
-from .models import DataFolder, ScraperSettings
+from hub_scraper.scraper import HabrScraper
+
+from .models import DataFolder, Hub
 from .utils import get_article_filters
 
 
@@ -93,8 +95,13 @@ async def main(
     filter_post_type: Optional[str],
     filter_up_votes_count: int,
 ):
-    scraper_settings = ScraperSettings(
-        hub_name=hub, threads_number=threads, time_delay=time_delay, max_page=max_page
+    min_up_votes = filter_up_votes_count if filter_up_votes_count > 0 else None
+    hub = Hub(
+        hub_name=hub,
+        threads_number=threads,
+        time_delay=time_delay,
+        max_page=max_page,
+        min_up_votes=min_up_votes,
     )
     data_folder = DataFolder(output_folder)
     article_filters = get_article_filters(
@@ -102,7 +109,7 @@ async def main(
         filter_post_type=filter_post_type,
         filter_up_votes_count=filter_up_votes_count,
     )
-    print(article_filters)
+    _ = HabrScraper(hub, article_filters, data_folder)
 
 
 if __name__ == "__main__":
