@@ -3,6 +3,7 @@ from enum import Enum, auto
 from .article_filter import ArticleFilter
 from .min_datetime_filter import MinDateTimeFilter
 from .post_type_filter import PostTypeFilter
+from .up_votes_count_filter import UpVotesCountFilter
 
 
 class ArticleFilterType(Enum):
@@ -12,11 +13,13 @@ class ArticleFilterType(Enum):
 
     min_datetime_filter = auto()
     post_type_filter = auto()
+    up_votes_filter = auto()
 
 
 FILTERS = {
     ArticleFilterType.min_datetime_filter: MinDateTimeFilter,
     ArticleFilterType.post_type_filter: PostTypeFilter,
+    ArticleFilterType.up_votes_filter: UpVotesCountFilter,
 }
 
 
