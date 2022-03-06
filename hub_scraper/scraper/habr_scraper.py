@@ -8,11 +8,11 @@ from ._types import Article, ArticleFilter, DataFolder, Hub
 class HabrScraper:
     def __init__(
         self,
-        settings: Hub,
+        hub: Hub,
         article_filters: List[ArticleFilter],
         data_folder: DataFolder,
     ):
-        self.settings = settings
+        self.hub = hub
         self.article_filters = article_filters
         self.data_folder = data_folder
 
@@ -22,5 +22,10 @@ class HabrScraper:
     def get_article(self, url: str) -> Article:
         pass
 
-    def _listing_page_generator(self) -> List[str]:
-        pass
+    def listing_pages_generator(self) -> List[str]:
+        urls = []
+        for page_number in range(1, self.hub.max_page):
+            url = self.hub.get_page_url(page_number)
+            if url:
+                urls.append(url)
+        return urls

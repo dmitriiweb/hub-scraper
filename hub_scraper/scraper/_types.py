@@ -5,6 +5,8 @@ from hub_scraper.articles import ArticleListing
 
 
 class Hub(Protocol):
+    max_page: int
+
     def get_page_url(self, page_number: int) -> str:
         ...
 
