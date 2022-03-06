@@ -5,9 +5,8 @@ from typing import Optional
 
 import click
 
-from utils import get_article_filters
-
 from .models import DataFolder, ScraperSettings
+from .utils import get_article_filters
 
 
 def coro(f):
@@ -103,6 +102,7 @@ async def main(
         filter_post_type=filter_post_type,
         filter_up_votes_count=filter_up_votes_count,
     )
+    print(article_filters)
 
 
 if __name__ == "__main__":

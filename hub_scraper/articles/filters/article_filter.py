@@ -13,7 +13,7 @@ class ArticleFilter(ABC):
     def __init__(self, *args):
         pass
 
-    def __str__(self):
+    def __repr__(self):
         return self.__class__.__name__
 
     @abstractmethod
