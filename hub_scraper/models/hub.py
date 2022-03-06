@@ -1,6 +1,5 @@
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 from urllib.parse import urlencode
 
 
@@ -36,17 +35,10 @@ class Hub:
 
         return urlencode(url_params)
 
-
-class DataFolder:
-    articles_folder_name = "articles"
-
-    def __init__(self, data_folder: str):
-        self.data_folder = Path(data_folder)
-        self._create_folders()
-
-    @property
-    def articles_folder(self) -> Path:
-        return self.data_folder / self.articles_folder_name
-
-    def _create_folders(self):
-        self.articles_folder.mkdir(parents=True, exist_ok=True)
+    def listing_pages_generator(self) -> List[str]:
+        urls = []
+        for page_number in range(1, self.max_page + 1):
+            url = self.get_page_url(page_number)
+            if url:
+                urls.append(url)
+        return urls
