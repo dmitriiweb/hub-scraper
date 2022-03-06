@@ -109,7 +109,9 @@ async def main(
         filter_post_type=filter_post_type,
         filter_up_votes_count=filter_up_votes_count,
     )
-    _ = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
+    scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
+    listing_pages = scraper.listing_pages_generator()
+    print(listing_pages)
 
 
 if __name__ == "__main__":
