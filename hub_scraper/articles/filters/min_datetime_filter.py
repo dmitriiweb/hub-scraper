@@ -8,10 +8,7 @@ from .article_filter import ArticleFilter
 
 class MinDateTimeFilter(ArticleFilter):
     def __init__(self, *args):
-        try:
-            self.threshold: datetime = args[0]
-        except IndexError:
-            raise ValueError("MinDateTimeFilter requires a threshold datetime")
+        self.threshold: datetime = args[0]
 
         if not isinstance(self.threshold, datetime):
             raise ValueError(
