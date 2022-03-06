@@ -2,6 +2,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
+import pytest
+
 from hub_scraper.articles.filters import ArticleFilterType, get_filter
 
 
@@ -28,3 +30,10 @@ def test_min_datetime_filter():
     )
     filtered_articles = article_filter.filter_articles(get_articles())  # type: ignore
     assert len(list(filtered_articles)) == 2
+
+
+def test_min_datetime_filter_error_wrong_type():
+    with pytest.raises(ValueError) as error:
+        get_filter("str", filter_type=ArticleFilterType.min_datetime_filter)
+
+    assert "requires a datetime object" in str(error.value)
