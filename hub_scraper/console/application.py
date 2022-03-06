@@ -5,9 +5,9 @@ from typing import Optional
 
 import click
 
+from hub_scraper.models import DataFolder, Hub
 from hub_scraper.scraper import HabrScraper
 
-from .models import DataFolder, Hub
 from .utils import get_article_filters
 
 

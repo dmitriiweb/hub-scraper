@@ -2,7 +2,7 @@ import shutil
 
 import pytest
 
-from hub_scraper.console.models import DataFolder, Hub
+from hub_scraper.models import DataFolder, Hub
 from hub_scraper.scraper import HabrScraper
 
 

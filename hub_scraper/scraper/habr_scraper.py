@@ -24,8 +24,8 @@ class HabrScraper:
 
     def listing_pages_generator(self) -> List[str]:
         urls = []
-        for page_number in range(1, self.hub.max_page):
-            url = self.hub.get_page_url(page_number + 1)
+        for page_number in range(1, self.hub.max_page + 1):
+            url = self.hub.get_page_url(page_number)
             if url:
                 urls.append(url)
         return urls
