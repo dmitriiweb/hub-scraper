@@ -36,6 +36,8 @@ class HabrScraper:
         urls = self.hub.listing_pages_generator()
         for url in urls:
             response = await self._get(url)
+            if response is None:
+                continue
             for _, v in response.json()["articleRefs"].items():
                 yield ArticleListing(**v)
 
@@ -49,3 +51,5 @@ class HabrScraper:
             return response
         except Exception as e:
             logger.error(f"Cannot get data from {url} {e}")
+
+        return None
