@@ -89,7 +89,7 @@ async def main(
     hub: str,
     output_folder: str,
     threads: int,
-    time_delay: int,
+    time_delay: float,
     max_page: int,
     filter_min_datetime: Optional[str],
     filter_post_type: Optional[str],
@@ -110,7 +110,7 @@ async def main(
         filter_up_votes_count=filter_up_votes_count,
     )
     scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
-    scraper.get_articles_listing()
+    articles_listing = await scraper.get_articles()
 
 
 if __name__ == "__main__":

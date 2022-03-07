@@ -5,6 +5,9 @@ from hub_scraper.articles import ArticleListing
 
 
 class Hub(Protocol):
+    threads_number: int
+    time_delay: float
+
     def listing_pages_generator(self) -> List[str]:
         ...
 

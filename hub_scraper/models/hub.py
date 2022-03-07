@@ -7,7 +7,7 @@ from urllib.parse import urlencode
 class Hub:
     hub_name: str
     threads_number: int
-    time_delay: int
+    time_delay: float
     max_page: int
     min_up_votes: Optional[int]
     _max_pages: int = 50

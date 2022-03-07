@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any, List
+from typing import Any, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 class Author(BaseModel):
     id: str
     alias: str
-    fullname: str
+    fullname: Optional[str] = None
     avatar_url: str = Field(..., alias="avatarUrl")
     speciality: str
 
