@@ -95,19 +95,17 @@ async def main(
     filter_post_type: Optional[str],
     filter_up_votes_count: int,
 ):
-    min_up_votes = filter_up_votes_count if filter_up_votes_count > 0 else None
     hub_settings = Hub(
         hub_name=hub,
         threads_number=threads,
         time_delay=time_delay,
         max_page=max_page,
-        min_up_votes=min_up_votes,
+        min_up_votes=filter_up_votes_count,
     )
     data_folder = DataFolder(output_folder)
     article_filters = get_article_filters(
         filter_min_datetime=filter_min_datetime,
         filter_post_type=filter_post_type,
-        filter_up_votes_count=filter_up_votes_count,
     )
     scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
     _ = await scraper.get_articles()

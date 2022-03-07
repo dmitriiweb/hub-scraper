@@ -32,6 +32,8 @@ class HabrScraper:
         async for i in article_listings:
             print(i)
 
+        await self.client.aclose()
+
     async def _get_articles_listing(self) -> AsyncIterator[ArticleListing]:
         urls = self.hub.listing_pages_generator()
         for url in urls:

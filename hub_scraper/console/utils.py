@@ -8,7 +8,6 @@ def get_article_filters(
     *,
     filter_min_datetime: Optional[str],
     filter_post_type: Optional[str],
-    filter_up_votes_count: int,
 ) -> List[ArticleFilter]:
     filters = []
 
@@ -17,8 +16,6 @@ def get_article_filters(
 
     if filter_post_type:
         filters.append(get_filter_post_type(filter_post_type))
-
-    filters.append(get_up_votes_count_filter(filter_up_votes_count))
 
     return filters
 
