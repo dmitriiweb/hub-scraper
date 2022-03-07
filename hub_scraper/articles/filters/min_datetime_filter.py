@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Generator, Iterable
+from typing import Optional
 
 from hub_scraper.articles import ArticleListing
 
@@ -17,9 +17,7 @@ class MinDateTimeFilter(ArticleFilter):
 
         super().__init__(*args)
 
-    def filter_articles(
-        self, articles: Iterable[ArticleListing]
-    ) -> Generator[ArticleListing, None, None]:
-        for article in articles:
-            if article.time_published >= self.threshold:
-                yield article
+    def filter_article(self, article: ArticleListing) -> Optional[ArticleListing]:
+        if article.time_published >= self.threshold:
+            return article
+        return None

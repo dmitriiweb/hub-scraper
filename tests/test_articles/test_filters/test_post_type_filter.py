@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import List
+
+import pytest
 
 from hub_scraper.articles.filters import ArticleFilterType, get_filter
 
@@ -9,16 +10,23 @@ class Article:
     post_type: str
 
 
-def get_articles() -> List[Article]:
-    article_types = ["article", "news", "ad"]
-    articles = [Article(i) for i in article_types]
-    return articles
+def get_article(atype: str) -> Article:
+    return Article(atype)
 
 
-def test_post_type_filter():
+@pytest.mark.parametrize(
+    "atype, result",
+    (
+        [get_article("article"), False],
+        [get_article("news"), False],
+        [get_article("ad"), True],
+    ),
+)
+def test_post_type_filter(atype, result):
     threshold = ["article", "news"]
     article_filter = get_filter(
         threshold, filter_type=ArticleFilterType.post_type_filter
     )
-    filtered_articles = article_filter.filter_articles(get_articles())  # type: ignore
-    assert len(list(filtered_articles)) == 2
+    filtered_article = article_filter.filter_article(atype)  # type: ignore
+    res = filtered_article is None
+    assert res == result

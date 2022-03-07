@@ -30,7 +30,7 @@ class HabrScraper:
     async def get_articles(self) -> AsyncIterator[Article]:
         article_listings = self._get_articles_listing()
         async for i in article_listings:
-            print(i)
+            filtered_articles = self._filter_articles(i)
 
         await self.client.aclose()
 
@@ -55,3 +55,8 @@ class HabrScraper:
             logger.error(f"Cannot get data from {url} {e}")
 
         return None
+
+    def _filter_articles(self, article_listing: ArticleListing) -> List[ArticleListing]:
+        for art_filter in self.article_filters:
+            article_listing = art_filter.filter_articles(article_listing)
+        return article_listing

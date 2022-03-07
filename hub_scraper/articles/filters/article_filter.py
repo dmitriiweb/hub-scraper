@@ -1,12 +1,7 @@
 from abc import ABC, abstractmethod
-from typing import Generator, List
+from typing import Optional
 
 from hub_scraper.articles import ArticleListing
-
-
-#
-# class Article(Protocol):
-#     ...
 
 
 class ArticleFilter(ABC):
@@ -17,7 +12,5 @@ class ArticleFilter(ABC):
         return self.__class__.__name__
 
     @abstractmethod
-    def filter_articles(
-        self, articles: List[ArticleListing]
-    ) -> Generator[ArticleListing, None, None]:
+    def filter_article(self, articles: ArticleListing) -> Optional[ArticleListing]:
         ...

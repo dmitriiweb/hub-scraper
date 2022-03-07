@@ -47,14 +47,3 @@ def get_filter_post_type(post_types: str):
     post_types_list = [i.strip() for i in post_types.split(",")]
     f = get_filter(post_types_list, filter_type=ArticleFilterType.post_type_filter)
     return f
-
-
-def get_up_votes_count_filter(up_votes_count: int):
-    """
-    Returns a filter for the minimum up votes count.
-
-    Args:
-        up_votes_count: must be an integer
-    """
-    f = get_filter(up_votes_count, filter_type=ArticleFilterType.up_votes_filter)
-    return f
