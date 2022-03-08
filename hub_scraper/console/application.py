@@ -108,7 +108,9 @@ async def main(
         filter_post_type=filter_post_type,
     )
     scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
-    _ = await scraper.get_articles()
+    articles = scraper.get_articles()
+    async for i in articles:
+        print(i)
 
 
 if __name__ == "__main__":

@@ -61,3 +61,7 @@ class ArticleListing(BaseModel):
     hubs: List[Hub]
     flows: List[Flow]
     tags: List[Tag]
+
+    @property
+    def article_url(self) -> str:
+        return f"https://habr.com/{self.lang}/post/{self.id}/"

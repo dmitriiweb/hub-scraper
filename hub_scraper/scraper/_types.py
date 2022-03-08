@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Protocol
+from typing import List, Optional, Protocol
 
 from hub_scraper.articles import ArticleListing
 
@@ -17,9 +17,5 @@ class DataFolder(Protocol):
 
 
 class ArticleFilter(Protocol):
-    def filter_articles(self, articles: List[ArticleListing]) -> List[ArticleListing]:
+    def filter_article(self, article: ArticleListing) -> Optional[ArticleListing]:
         ...
-
-
-class Article(Protocol):
-    url: str
