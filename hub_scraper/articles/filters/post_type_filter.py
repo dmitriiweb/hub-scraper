@@ -13,3 +13,4 @@ class PostTypeFilter(ArticleFilter):
     def filter_article(self, article: ArticleListing) -> Optional[ArticleListing]:
         if article.post_type in self.article_types:
             return article
+        return None

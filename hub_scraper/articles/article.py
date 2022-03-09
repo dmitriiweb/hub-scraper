@@ -1,16 +1,11 @@
-import json
 import re
 
 from dataclasses import dataclass
 from datetime import datetime
-from pprint import pprint
 from typing import Optional, Protocol
 
 import chompjs
-import dateutil.parser as dp
 import lxml.html as lh
-
-from pydantic import BaseModel
 
 
 RE_SCRIPT = re.compile(r"window.__INITIAL_STATE__=(.*);")
@@ -43,7 +38,7 @@ class Article:
         script = html.xpath(".//script[contains(text(), '" + script_txt + "')]/text()")[
             0
         ].strip()
-        js_data = RE_SCRIPT.match(script).group(1)
+        js_data = RE_SCRIPT.match(script).group(1)  # type: ignore
         raw_data = chompjs.parse_js_object(js_data)
         article_data = raw_data["articlesList"]["articlesList"]
         for _, v in article_data.items():
@@ -59,3 +54,4 @@ class Article:
                 description=v["leadData"]["textHtml"],
                 text_html=v["textHtml"],
             )
+        return None

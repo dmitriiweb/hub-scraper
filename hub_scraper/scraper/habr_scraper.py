@@ -30,7 +30,7 @@ class HabrScraper:
         self.semaphore = asyncio.Semaphore(self.hub.threads_number)
         self.client = httpx.AsyncClient()
 
-    async def get_articles(self) -> AsyncIterator[Article]:
+    async def get_articles(self) -> AsyncIterator[Optional[Article]]:
         article_listings = self._get_articles_listing()
         async for i in article_listings:
             filtered_i = self._filter_article(i)
@@ -38,7 +38,7 @@ class HabrScraper:
                 continue
 
             try:
-                article = await self.get_article(filtered_i.article_url)
+                article = await self._get_article(filtered_i.article_url)
                 yield article
             except Exception as e:
                 logger.error(f"Cannot get article from {filtered_i.article_url} {e}")
@@ -54,9 +54,9 @@ class HabrScraper:
             for _, v in response.json()["articleRefs"].items():
                 yield ArticleListing(**v)
 
-    async def get_article(self, url: str) -> Optional[Article]:
+    async def _get_article(self, url: str) -> Optional[Article]:
         response = await self._get(url)
-        article = Article.from_response(response)
+        article: Optional[Article] = Article.from_response(response)  # type: ignore
         return article
 
     async def _get(self, url: str) -> Optional[httpx.Response]:
@@ -72,12 +72,11 @@ class HabrScraper:
         return None
 
     def _filter_article(
-        self, article_listing: ArticleListing
+        self, article_listing: Optional[ArticleListing]
     ) -> Optional[ArticleListing]:
         for art_filter in self.article_filters:
-            article_listing = art_filter.filter_article(article_listing)
-
             if article_listing is None:
                 return None
+            article_listing = art_filter.filter_article(article_listing)
 
         return article_listing
