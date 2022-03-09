@@ -3,10 +3,14 @@ import re
 
 from dataclasses import dataclass
 from datetime import datetime
+from pprint import pprint
 from typing import Optional, Protocol
 
 import chompjs
+import dateutil.parser as dp
 import lxml.html as lh
+
+from pydantic import BaseModel
 
 
 RE_SCRIPT = re.compile(r"window.__INITIAL_STATE__=(.*);")
@@ -41,3 +45,17 @@ class Article:
         ].strip()
         js_data = RE_SCRIPT.match(script).group(1)
         raw_data = chompjs.parse_js_object(js_data)
+        article_data = raw_data["articlesList"]["articlesList"]
+        for _, v in article_data.items():
+            return cls(
+                id=v["id"],
+                url=response.url,
+                time_published=datetime.strptime(
+                    v["timePublished"], "%Y-%m-%dT%H:%M:%S%z"
+                ),
+                is_corporative=v["isCorporative"],
+                lang=v["lang"],
+                title=v["titleHtml"],
+                description=v["leadData"]["textHtml"],
+                text_html=v["textHtml"],
+            )
