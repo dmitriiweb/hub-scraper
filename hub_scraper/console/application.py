@@ -1,8 +1,14 @@
 import asyncio
-from pathlib import Path
+
 from functools import wraps
+from typing import Optional
 
 import click
+
+from hub_scraper.models import DataFolder, Hub
+from hub_scraper.scraper import HabrScraper
+
+from .utils import get_article_filters
 
 
 def coro(f):
@@ -21,9 +27,9 @@ def coro(f):
 @click.command()
 @coro
 @click.option(
-    "-u",
-    "--url",
-    help="Hab to scrape, e.g. https://habr.com/ru/hub/python/",
+    "-h",
+    "--hub",
+    help="Hub name, e.g. 'python' ",
     type=str,
     required=True,
 )
@@ -51,15 +57,60 @@ def coro(f):
     default=1,
 )
 @click.option(
-    "--images",
-    help="If true will download images from articles locally, if not in downloaded articles will be urls to images. Default False",
-    type=bool,
+    "-mp",
+    "--max-page",
+    help="Max page to scrape, default: 50",
+    type=int,
     required=False,
-    default=False,
-    is_flag=True,
+    default=50,
 )
-async def main(url: str, output_folder: str, threads: int, time_delay: int, images: bool):
-    output_folder = Path(output_folder)
+@click.option(
+    "--filter-min-datetime",
+    help="Filter articles by min date and time of publications, e.g. 'dd-mm-yyyy hh:mm', default: None",
+    type=str,
+    required=False,
+    default=None,
+)
+@click.option(
+    "--filter-post-type",
+    help="List of post types to include articles, e.g. 'article, news', default: article",
+    type=str,
+    required=False,
+    default="article",
+)
+@click.option(
+    "--filter-up-votes-count",
+    help="Filter articles by minimum up-votes count, default: 0",
+    type=int,
+    required=False,
+    default=0,
+)
+async def main(
+    hub: str,
+    output_folder: str,
+    threads: int,
+    time_delay: float,
+    max_page: int,
+    filter_min_datetime: Optional[str],
+    filter_post_type: Optional[str],
+    filter_up_votes_count: int,
+):
+    hub_settings = Hub(
+        hub_name=hub,
+        threads_number=threads,
+        time_delay=time_delay,
+        max_page=max_page,
+        min_up_votes=filter_up_votes_count,
+    )
+    data_folder = DataFolder(output_folder)
+    article_filters = get_article_filters(
+        filter_min_datetime=filter_min_datetime,
+        filter_post_type=filter_post_type,
+    )
+    scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
+    articles = scraper.get_articles()
+    async for i in articles:
+        print(i)
 
 
 if __name__ == "__main__":
