@@ -5,6 +5,7 @@ from typing import Optional
 
 import click
 
+from hub_scraper.indexers import indexer
 from hub_scraper.models import DataFolder, Hub
 from hub_scraper.scraper import HabrScraper
 
@@ -113,6 +114,8 @@ async def main(
         if i is None:
             continue
         await i.save()
+    index_maker = indexer("default-obsidian", data_folder)
+    await index_maker.make_index()
 
 
 if __name__ == "__main__":
