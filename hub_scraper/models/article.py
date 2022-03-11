@@ -5,6 +5,7 @@ from datetime import datetime
 from typing import Optional, Protocol
 
 import chompjs
+import html2md
 import lxml.html as lh
 
 
@@ -27,6 +28,10 @@ class Article:
     title: str
     description: str
     text_html: str
+
+    @property
+    def text_md(self) -> str:
+        return html2md.convert(self.text_html)
 
     @classmethod
     def from_response(cls, response: Response) -> Optional["Article"]:
