@@ -9,6 +9,9 @@ import chompjs
 import html2md
 import lxml.html as lh
 
+from aiofile import async_open
+from loguru import logger
+
 
 RE_SCRIPT = re.compile(r"window.__INITIAL_STATE__=(.*);")
 
@@ -85,11 +88,14 @@ class Article:
 
     async def save(self, output_folder: Path):
         article_folder = self._get_article_folder(output_folder)
+        logger.info(f"Saving {self.title} to {article_folder.absolute()}")
         await self._save_article(article_folder)
         await self._save_meta(article_folder)
 
     async def _save_article(self, article_folder: Path):
-        pass
+        filepath = article_folder.joinpath("article.md")
+        async with async_open(filepath, "w") as f:
+            await f.write(self.text_md)
 
     async def _save_meta(self, article_folder: Path):
         pass
