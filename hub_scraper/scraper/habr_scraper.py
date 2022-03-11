@@ -6,6 +6,7 @@ import httpx
 
 from loguru import logger
 
+from hub_scraper.filters.existed_filter import ExistedFilter
 from hub_scraper.models import Article, ArticleListing
 
 from ._types import ArticleFilter, DataFolder, Hub
@@ -27,12 +28,15 @@ class HabrScraper:
         self.article_filters = article_filters
         self.data_folder = data_folder
 
+        self.existed_filter = ExistedFilter(self.data_folder.articles_folder)
         self.semaphore = asyncio.Semaphore(self.hub.threads_number)
         self.client = httpx.AsyncClient()
 
     async def get_articles(self) -> AsyncIterator[Optional[Article]]:
         article_listings = self._get_articles_listing()
         async for i in article_listings:
+            if self.is_article_existed(i):
+                continue
             filtered_i = self._filter_article(i)
             if filtered_i is None:
                 continue
@@ -44,6 +48,12 @@ class HabrScraper:
                 logger.error(f"Cannot get article from {filtered_i.article_url} {e}")
 
         await self.client.aclose()
+
+    def is_article_existed(self, article: ArticleListing) -> bool:
+        res = self.existed_filter.filter_article(article)
+        if res is not None:
+            return False
+        return True
 
     async def _get_articles_listing(self) -> AsyncIterator[ArticleListing]:
         urls = self.hub.listing_pages_generator()
