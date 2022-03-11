@@ -1,6 +1,7 @@
 from enum import Enum, auto
 
 from .article_filter import ArticleFilter
+from .existed_filter import ExistedFilter
 from .min_datetime_filter import MinDateTimeFilter
 from .post_type_filter import PostTypeFilter
 
@@ -12,11 +13,13 @@ class ArticleFilterType(Enum):
 
     min_datetime_filter = auto()
     post_type_filter = auto()
+    existed_filter = auto()
 
 
 FILTERS = {
     ArticleFilterType.min_datetime_filter: MinDateTimeFilter,
     ArticleFilterType.post_type_filter: PostTypeFilter,
+    ArticleFilterType.existed_filter: ExistedFilter,
 }
 
 

@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Optional, Protocol
 
-from hub_scraper.articles import ArticleListing
+from hub_scraper.models import ArticleListing
 
 
 class Hub(Protocol):

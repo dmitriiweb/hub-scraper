@@ -1,7 +1,7 @@
 import hub_scraper.console.utils as cli_utils
 
-from hub_scraper.articles.filters.min_datetime_filter import MinDateTimeFilter
-from hub_scraper.articles.filters.post_type_filter import PostTypeFilter
+from hub_scraper.filters.min_datetime_filter import MinDateTimeFilter
+from hub_scraper.filters.post_type_filter import PostTypeFilter
 
 
 def test_get_min_datetime_filter():

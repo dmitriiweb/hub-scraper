@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import Optional
 
-from hub_scraper.articles import ArticleListing
+from hub_scraper.models import ArticleListing
 
 from .article_filter import ArticleFilter
 
