@@ -27,4 +27,4 @@ class ArticleMeta(BaseModel):
     def as_json(self) -> str:
         as_dict = self.dict()
         as_dict["time_published"] = self.time_published.isoformat()
-        return json.dumps(as_dict, indent=4)
+        return json.dumps(as_dict, indent=4, ensure_ascii=False)
