@@ -87,7 +87,7 @@ class Article:
         await self._save_text_data("article.md", self.text_md)
 
     async def _save_meta(self):
-        await self._save_text_data("meta.json", self.meta.as_json)
+        await self._save_text_data("meta.json", self.meta.json(indent=4))
 
     async def _save_text_data(self, filename: str, data: str):
         filepath = self.article_folder.joinpath(filename)
