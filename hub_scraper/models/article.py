@@ -93,7 +93,7 @@ class Article:
         article_data = raw_data["articlesList"]["articlesList"]
         for _, v in article_data.items():
             author = Author.from_dict(v["author"])
-            tags = [tag["title"] for tag in v["hubs"]]
+            tags = [tag["title"] for tag in v["hubs"] if not tag["isProfiled"]]
             meta = ArticleMeta(
                 id=v["id"],
                 url=str(response.url),
