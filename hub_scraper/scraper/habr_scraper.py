@@ -66,7 +66,7 @@ class HabrScraper:
 
     async def _get_article(self, url: str) -> Optional[Article]:
         response = await self._get(url)
-        article: Optional[Article] = Article.from_response(response)  # type: ignore
+        article: Optional[Article] = Article.from_response(response, self.data_folder.articles_folder)  # type: ignore
         return article
 
     async def _get(self, url: str) -> Optional[httpx.Response]:
