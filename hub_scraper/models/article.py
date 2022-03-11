@@ -32,7 +32,7 @@ class Author:
 
 
 @dataclass
-class Article:
+class ArticleMeta:
     id: str
     url: str
     time_published: datetime
@@ -40,16 +40,27 @@ class Article:
     lang: str
     title: str
     description: str
-    text_html: str
     author: Author
     tags: List[str]
 
     @property
+    def tags_as_string(self) -> str:
+        return ", ".join(self.tags)
+
+
+@dataclass
+class Article:
+    meta: ArticleMeta
+    text_html: str
+
+    @property
     def text_md(self) -> str:
-        dt = self.time_published.strftime("%Y-%m-%d %H:%M")
-        tags = ", ".join(self.tags)
-        title = f"[{self.title}]({self.url})"
-        article_text = f"# {title}\n**{self.author.author_alias} {dt}**\n*{tags}*\n"
+        dt = self.meta.time_published.strftime("%Y-%m-%d %H:%M")
+        title = f"[{self.meta.title}]({self.meta.url})"
+        tags = self.meta.tags
+        article_text = (
+            f"# {title}\n**{self.meta.author.author_alias} {dt}**\n*{tags}*\n"
+        )
         article_text += markdownify(self.text_html)
         return article_text
 
@@ -69,7 +80,7 @@ class Article:
         for _, v in article_data.items():
             author = Author.from_dict(v["author"])
             tags = [tag["title"] for tag in v["hubs"]]
-            return cls(
+            meta = ArticleMeta(
                 id=v["id"],
                 url=response.url,
                 time_published=datetime.strptime(
@@ -79,9 +90,12 @@ class Article:
                 lang=v["lang"],
                 title=v["titleHtml"],
                 description=v["leadData"]["textHtml"],
-                text_html=v["textHtml"],
                 author=author,
                 tags=tags,
+            )
+            return cls(
+                meta=meta,
+                text_html=v["textHtml"],
             )
         return None
 
