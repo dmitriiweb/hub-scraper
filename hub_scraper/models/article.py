@@ -2,7 +2,8 @@ import re
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, Protocol
+from pathlib import Path
+from typing import List, Optional, Protocol
 
 import chompjs
 import html2md
@@ -19,6 +20,15 @@ class Response(Protocol):
 
 
 @dataclass
+class Author:
+    author_alias: str
+
+    @classmethod
+    def from_dict(cls, author_dict: dict) -> "Author":
+        return cls(author_dict["alias"])
+
+
+@dataclass
 class Article:
     id: str
     url: str
@@ -28,10 +38,18 @@ class Article:
     title: str
     description: str
     text_html: str
+    author: Author
+    tags: List[str]
 
     @property
     def text_md(self) -> str:
-        return html2md.convert(self.text_html)
+        dt = self.time_published.strftime("%Y-%m-%d %H:%M")
+        tags = ", ".join(self.tags)
+        article_text = (
+            f"# {self.title}\n**{self.author.author_alias} {dt}**\n*{tags}*\n"
+        )
+        article_text += html2md.convert(self.text_html)
+        return article_text
 
     @classmethod
     def from_response(cls, response: Response) -> Optional["Article"]:
@@ -47,6 +65,8 @@ class Article:
         raw_data = chompjs.parse_js_object(js_data)
         article_data = raw_data["articlesList"]["articlesList"]
         for _, v in article_data.items():
+            author = Author.from_dict(v["author"])
+            tags = [tag["title"] for tag in v["hubs"]]
             return cls(
                 id=v["id"],
                 url=response.url,
@@ -58,5 +78,23 @@ class Article:
                 title=v["titleHtml"],
                 description=v["leadData"]["textHtml"],
                 text_html=v["textHtml"],
+                author=author,
+                tags=tags,
             )
         return None
+
+    async def save(self, output_folder: Path):
+        article_folder = self._get_article_folder(output_folder)
+        await self._save_article(article_folder)
+        await self._save_meta(article_folder)
+
+    async def _save_article(self, article_folder: Path):
+        pass
+
+    async def _save_meta(self, article_folder: Path):
+        pass
+
+    def _get_article_folder(self, output_folder: Path) -> Path:
+        folder = output_folder.joinpath(self.id)
+        folder.mkdir(exist_ok=True, parents=True)
+        return folder

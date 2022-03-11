@@ -110,7 +110,9 @@ async def main(
     scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
     articles = scraper.get_articles()
     async for i in articles:
-        print(i)
+        print(50 * ">")
+        print(i.text_md)
+        print(50 * "<")
 
 
 if __name__ == "__main__":
