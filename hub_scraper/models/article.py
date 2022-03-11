@@ -6,11 +6,11 @@ from pathlib import Path
 from typing import List, Optional, Protocol
 
 import chompjs
-import html2md
 import lxml.html as lh
 
 from aiofile import async_open
 from loguru import logger
+from markdownify import markdownify
 
 
 RE_SCRIPT = re.compile(r"window.__INITIAL_STATE__=(.*);")
@@ -48,10 +48,9 @@ class Article:
     def text_md(self) -> str:
         dt = self.time_published.strftime("%Y-%m-%d %H:%M")
         tags = ", ".join(self.tags)
-        article_text = (
-            f"# {self.title}\n**{self.author.author_alias} {dt}**\n*{tags}*\n"
-        )
-        article_text += html2md.convert(self.text_html)
+        title = f"[{self.title}]({self.url})"
+        article_text = f"# {title}\n**{self.author.author_alias} {dt}**\n*{tags}*\n"
+        article_text += markdownify(self.text_html)
         return article_text
 
     @classmethod
