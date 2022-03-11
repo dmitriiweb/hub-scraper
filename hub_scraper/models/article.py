@@ -11,6 +11,8 @@ from aiofile import async_open
 from loguru import logger
 from markdownify import markdownify
 
+from hub_scraper import conf
+
 from .article_author import Author
 from .article_meta import ArticleMeta
 
@@ -84,10 +86,10 @@ class Article:
         await asyncio.gather(*tasks)
 
     async def _save_article(self):
-        await self._save_text_data("article.md", self.text_md)
+        await self._save_text_data(conf.ARTICLE_FILE_NAME, self.text_md)
 
     async def _save_meta(self):
-        await self._save_text_data("meta.json", self.meta.json(indent=4))
+        await self._save_text_data(conf.META_FILE_NAME, self.meta.json(indent=4))
 
     async def _save_text_data(self, filename: str, data: str):
         filepath = self.article_folder.joinpath(filename)
