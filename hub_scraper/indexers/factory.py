@@ -1,9 +1,10 @@
 from hub_scraper.models import DataFolder
 
 from .indexer import Indexer
+from .indexers import DefaultObsidian
 
 
-INDEXERS = {}
+INDEXERS = {"default-obsidian": DefaultObsidian}
 
 
 def indexer(indexer_name: str, data_folder: DataFolder, **kwargs) -> Indexer:
