@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from hub_scraper.articles.filters import ArticleFilterType, get_filter
+from hub_scraper.filters import ArticleFilterType, get_filter
 
 
 @dataclass

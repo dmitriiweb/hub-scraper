@@ -6,7 +6,7 @@ import httpx
 
 from loguru import logger
 
-from hub_scraper.articles import Article, ArticleListing
+from hub_scraper.models import Article, ArticleListing
 
 from ._types import ArticleFilter, DataFolder, Hub
 

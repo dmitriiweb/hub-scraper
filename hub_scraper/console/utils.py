@@ -1,7 +1,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from hub_scraper.articles.filters import ArticleFilter, ArticleFilterType, get_filter
+from hub_scraper.filters import ArticleFilter, ArticleFilterType, get_filter
 
 
 def get_article_filters(

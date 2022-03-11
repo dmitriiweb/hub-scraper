@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from hub_scraper.articles import ArticleListing
+from hub_scraper.models import ArticleListing
 
 
 class ArticleFilter(ABC):
