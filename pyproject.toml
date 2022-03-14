@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hub-scraper"
-version = "0.6.0"
+version = "0.6.1"
 description = "Tool to grab articles from the habr.com hubs."
 packages = [{include="hub_scraper"}]
 authors = ["Dmitrii Kurlov <dmitriik@protonmail.com>"]

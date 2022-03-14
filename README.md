@@ -7,7 +7,7 @@ Tool to grab articles from the habr.com hubs.
 
 ## Installation
 ```bash
-pip install habr-scraper
+pip install hub-scraper
 ```
 
 
