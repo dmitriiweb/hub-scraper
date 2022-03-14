@@ -41,8 +41,8 @@ class DefaultObsidian(Indexer):
             await f.write(f"# {tag.name}\n")
 
             for meta in metas:
-                filepath = (
+                article_filepath = (
                     f"../{conf.ARTICLES_FOLDER_NAME}/{meta.id}/{conf.ARTICLE_FILE_NAME}"
                 )
-                line = f"- [[{filepath} | {meta.title}]]\n"
+                line = f"- [[{article_filepath} | {meta.title}]]\n"
                 await f.write(line)

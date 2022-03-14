@@ -1,8 +1,25 @@
 [tool.poetry]
 name = "hub-scraper"
-version = "0.1.0"
-description = ""
+version = "0.6.0"
+description = "Tool to grab articles from the habr.com hubs."
+packages = ["hub_scraper"]
 authors = ["Dmitrii Kurlov <dmitriik@protonmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/dmitriiweb/hub-scraper"
+keywords = ["habr.com", "scraper", "cli", "tools"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: Utilities",
+]
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.11"
