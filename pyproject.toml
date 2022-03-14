@@ -2,7 +2,7 @@
 name = "hub-scraper"
 version = "0.6.0"
 description = "Tool to grab articles from the habr.com hubs."
-packages = ["hub_scraper"]
+packages = [{include="hub_scraper"}]
 authors = ["Dmitrii Kurlov <dmitriik@protonmail.com>"]
 license = "MIT"
 readme = "README.md"
