@@ -48,7 +48,7 @@ class Metas(List[ArticleMeta]):
         return ArticleMeta(**js_data)
 
     def sort_by_tags(self) -> Dict[Tag, "Metas"]:
-        sorted_metas = defaultdict(self.__class__)
+        sorted_metas: Dict[Tag, "Metas"] = defaultdict(self.__class__)
         for i in self:
             if len(i.tags) == 0:
                 tag = Tag("Others")
