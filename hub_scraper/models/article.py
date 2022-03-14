@@ -1,11 +1,8 @@
 import asyncio
-import json
 import re
 
-from dataclasses import asdict, dataclass
-from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Protocol
+from typing import Optional, Protocol
 
 import chompjs
 import lxml.html as lh
@@ -13,6 +10,11 @@ import lxml.html as lh
 from aiofile import async_open
 from loguru import logger
 from markdownify import markdownify
+
+from hub_scraper import conf
+
+from .article_author import Author
+from .article_meta import ArticleMeta
 
 
 RE_SCRIPT = re.compile(r"window.__INITIAL_STATE__=(.*);")
@@ -22,38 +24,6 @@ class Response(Protocol):
     text: str
     status_code: int
     url: str
-
-
-@dataclass
-class Author:
-    author_alias: str
-
-    @classmethod
-    def from_dict(cls, author_dict: Dict[str, Any]) -> "Author":
-        return cls(author_dict["alias"])
-
-
-@dataclass
-class ArticleMeta:
-    id: str
-    url: str
-    time_published: datetime
-    is_corporative: bool
-    lang: str
-    title: str
-    description: str
-    author: Author
-    tags: List[str]
-
-    @property
-    def tags_as_string(self) -> str:
-        return ", ".join(self.tags)
-
-    @property
-    def json(self) -> str:
-        as_dict = asdict(self)
-        as_dict["time_published"] = self.time_published.isoformat()
-        return json.dumps(as_dict, indent=4)
 
 
 class Article:
@@ -70,9 +40,7 @@ class Article:
         dt = self.meta.time_published.strftime("%Y-%m-%d %H:%M")
         title = f"[{self.meta.title}]({self.meta.url})"
         tags = self.meta.tags
-        article_text = (
-            f"# {title}\n**{self.meta.author.author_alias} {dt}**\n*{tags}*\n"
-        )
+        article_text = f"# {title}\n**{self.meta.author.alias} {dt}**\n*{tags}*\n"
         article_text += markdownify(self.text_html)
         return article_text
 
@@ -92,14 +60,12 @@ class Article:
         raw_data = chompjs.parse_js_object(js_data)
         article_data = raw_data["articlesList"]["articlesList"]
         for _, v in article_data.items():
-            author = Author.from_dict(v["author"])
+            author = Author(**v["author"])
             tags = [tag["title"] for tag in v["hubs"] if not tag["isProfiled"]]
             meta = ArticleMeta(
                 id=v["id"],
                 url=str(response.url),
-                time_published=datetime.strptime(
-                    v["timePublished"], "%Y-%m-%dT%H:%M:%S%z"
-                ),
+                time_published=v["timePublished"],
                 is_corporative=v["isCorporative"],
                 lang=v["lang"],
                 title=v["titleHtml"],
@@ -118,14 +84,12 @@ class Article:
         logger.info(f"Saving {self} to {self.article_folder.absolute()}")
         tasks = [self._save_article(), self._save_meta()]
         await asyncio.gather(*tasks)
-        # await self._save_article()
-        # await self._save_meta()
 
     async def _save_article(self):
-        await self._save_text_data("article.md", self.text_md)
+        await self._save_text_data(conf.ARTICLE_FILE_NAME, self.text_md)
 
     async def _save_meta(self):
-        await self._save_text_data("meta.json", self.meta.json)
+        await self._save_text_data(conf.META_FILE_NAME, self.meta.json(indent=4))
 
     async def _save_text_data(self, filename: str, data: str):
         filepath = self.article_folder.joinpath(filename)
