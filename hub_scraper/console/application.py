@@ -108,12 +108,12 @@ async def main(
         filter_min_datetime=filter_min_datetime,
         filter_post_type=filter_post_type,
     )
-    # scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
-    # articles = scraper.get_articles()
-    # async for i in articles:
-    #     if i is None:
-    #         continue
-    #     await i.save()
+    scraper = HabrScraper(hub_settings, article_filters, data_folder)  # type: ignore
+    articles = scraper.get_articles()
+    async for i in articles:
+        if i is None:
+            continue
+        await i.save()
     index_maker = indexer("default-obsidian", data_folder)
     await index_maker.make_index()
 

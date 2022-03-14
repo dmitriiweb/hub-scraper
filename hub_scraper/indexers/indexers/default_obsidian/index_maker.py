@@ -1,6 +1,6 @@
 import asyncio
 
-from pprint import pprint
+from typing import List
 
 from aiofile import async_open
 from loguru import logger
@@ -18,7 +18,16 @@ class DefaultObsidian(Indexer):
         sorted_tags = sorted(list(sorted_metas.keys()))
 
         tasks = [self._save_table(tag, sorted_metas[tag]) for tag in sorted_tags]
+        tasks.append(self._make_index_file(sorted_tags))
         await asyncio.gather(*tasks)
+
+    async def _make_index_file(self, tags: List[Tag]):
+        filepath = self.data_folder.data_folder.joinpath(conf.INDEX_FILE_NAME)
+        async with async_open(filepath, "w") as f:
+            for tag in tags:
+                hub_index = f"{conf.INDEX_FOLDER_NAME}/{tag.slug}.md"
+                line = f"- [[{hub_index} | {tag.name}]]\n"
+                await f.write(line)
 
     async def _get_metas(self) -> Metas:
         article_folders = self.data_folder.get_article_folders()
